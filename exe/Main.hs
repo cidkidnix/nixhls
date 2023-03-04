@@ -2,6 +2,7 @@
 
 module Main where
 
+import Control.Concurrent
 import Distribution.PackageDescription.Configuration
 import Distribution.Types.GenericPackageDescription
 import Distribution.Types.PackageName
@@ -14,6 +15,7 @@ import System.Which
 
 checkAndReload :: FilePath -> ProcessHandle -> EpochTime -> IO ()
 checkAndReload cabal pro modtime = do
+  threadDelay 2000000 -- Wait 2 seconds so we aren't constantly hitting a cpu thread
   filestat <- getFileStatus cabal
   let modtime' = modificationTime filestat
   if modtime /= modtime'
